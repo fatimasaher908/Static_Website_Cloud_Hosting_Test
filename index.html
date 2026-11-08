@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f5f2">
+  <meta name="description" content="Clear, practical cybersecurity guidance for the people behind small teams.">
+  <title>Safehouse — Cybersecurity, made practical</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f3f5f2;
+      --white: #fff;
+      --ink: #17231f;
+      --muted: #64716b;
+      --line: #dce2dc;
+      --green: #1c604b;
+      --green-dark: #143e33;
+      --lime: #d7ef78;
+      --orange: #e76947;
+      --mono: "DM Mono", "Courier New", monospace;
+      --sans: "DM Sans", "Segoe UI", sans-serif;
+      --display: "Space Grotesk", "Trebuchet MS", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    button, input { font: inherit; }
+    button:focus-visible, a:focus-visible, input:focus-visible + label {
+      outline: 3px solid var(--orange);
+      outline-offset: 4px;
+    }
+    .shell { width: min(1160px, calc(100% - 64px)); margin-inline: auto; }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--green);
+      font: 500 11px/1.4 var(--mono);
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); content: ""; }
+
+    .site-header { border-bottom: 1px solid var(--line); }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; color: var(--ink); text-decoration: none; }
+    .brand-mark { width: 32px; height: 32px; display: grid; place-items: center; background: var(--green); color: var(--lime); font: 700 17px/1 var(--display); }
+    .brand-name { font: 700 19px/1 var(--display); }
+    .nav-links { display: flex; align-items: center; gap: 34px; }
+    .nav-links a { color: var(--muted); font-size: 13px; font-weight: 600; text-decoration: none; }
+    .nav-links a:hover { color: var(--green); }
+    .nav-cta { min-height: 42px; display: inline-flex; align-items: center; gap: 10px; padding: 0 16px; background: var(--green); color: white; font-size: 13px; font-weight: 700; text-decoration: none; transition: background .2s ease; }
+    .nav-cta:hover { background: var(--green-dark); }
+
+    .hero { display: grid; grid-template-columns: 1fr 0.94fr; gap: 64px; align-items: center; padding-block: 74px 82px; }
+    .hero-copy { padding-block: 18px; animation: arrive .7s both; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 580px; margin: 22px 0 20px; font: 600 66px/1.02 var(--display); letter-spacing: 0; }
+    h1 span { color: var(--green); }
+    .hero-copy > p { max-width: 450px; margin-bottom: 28px; color: var(--muted); font-size: 17px; }
+    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
+    .button-primary { min-height: 49px; display: inline-flex; align-items: center; justify-content: center; gap: 18px; padding: 0 18px; border: 0; background: var(--green); color: white; font-weight: 700; text-decoration: none; transition: background .2s ease, transform .2s ease; }
+    .button-primary:hover { background: var(--green-dark); transform: translateY(-2px); }
+    .text-link { color: var(--ink); font-size: 13px; font-weight: 700; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+    .hero-visual { position: relative; min-height: 430px; animation: arrive .7s .12s both; }
+    .hero-image { position: absolute; inset: 0 0 24px 24px; width: calc(100% - 24px); height: calc(100% - 24px); object-fit: cover; object-position: center; background: #d5ded8; }
+    .visual-index { position: absolute; top: 20px; left: 0; padding: 12px 15px; background: var(--lime); color: var(--ink); font: 500 10px/1.4 var(--mono); text-transform: uppercase; }
+    .visual-note { position: absolute; right: 0; bottom: 0; width: min(270px, 76%); padding: 20px 21px; background: var(--white); border-top: 3px solid var(--orange); box-shadow: 0 9px 30px #17231f12; }
+    .visual-note span { display: block; margin-bottom: 6px; color: var(--muted); font: 400 10px/1.4 var(--mono); text-transform: uppercase; }
+    .visual-note strong { display: block; font: 600 18px/1.3 var(--display); }
+    .visual-note p { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
+
+    .principles { background: var(--green-dark); color: white; }
+    .principles-inner { display: grid; grid-template-columns: 1.1fr repeat(3, 1fr); align-items: stretch; }
+    .principles-heading { padding: 29px 28px 29px 0; color: #dce8df; font: 500 12px/1.5 var(--mono); text-transform: uppercase; }
+    .principle { padding: 24px 24px 22px; border-left: 1px solid #ffffff27; }
+    .principle b { display: block; margin-bottom: 5px; color: var(--lime); font: 600 17px/1.3 var(--display); }
+    .principle span { color: #d1ded7; font-size: 12px; }
+
+    .section { padding-block: 92px; }
+    .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 28px; margin-bottom: 34px; }
+    h2 { margin: 13px 0 0; font: 600 40px/1.1 var(--display); letter-spacing: 0; }
+    .section-heading > p { max-width: 340px; margin-bottom: 2px; color: var(--muted); font-size: 14px; }
+    .signals { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .signal { min-height: 198px; padding: 25px 28px 28px 0; }
+    .signal + .signal { padding-left: 28px; border-left: 1px solid var(--line); }
+    .signal-number { color: var(--orange); font: 500 11px/1.4 var(--mono); }
+    .signal h3 { margin: 20px 0 8px; font: 600 21px/1.25 var(--display); }
+    .signal p { max-width: 320px; margin: 0; color: var(--muted); font-size: 13px; }
+
+    .check-section { padding-block: 74px; background: #e8eee8; }
+    .check-layout { display: grid; grid-template-columns: .78fr 1.22fr; gap: 80px; align-items: start; }
+    .check-intro { position: sticky; top: 24px; }
+    .check-intro h2 { max-width: 360px; margin-bottom: 17px; }
+    .check-intro > p { max-width: 340px; color: var(--muted); font-size: 14px; }
+    .local-note { display: flex; align-items: center; gap: 10px; margin-top: 25px; color: var(--green); font: 400 10px/1.5 var(--mono); text-transform: uppercase; }
+    .local-note::before { content: ""; width: 8px; height: 8px; background: var(--green); border-radius: 50%; }
+    .checklist { background: var(--white); }
+    .checklist-top { display: flex; justify-content: space-between; gap: 20px; align-items: center; padding: 20px 23px; border-bottom: 1px solid var(--line); }
+    .checklist-top strong { font: 600 16px/1.4 var(--display); }
+    .progress-copy { color: var(--muted); font: 400 10px/1.4 var(--mono); text-align: right; }
+    .progress-track { height: 4px; background: #e7ece7; }
+    .progress-fill { width: 0; height: 100%; background: var(--green); transition: width .3s ease; }
+    .check-items { padding: 3px 23px; }
+    .check-item { display: grid; grid-template-columns: 20px 1fr; gap: 13px; align-items: start; padding: 18px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+    .check-item:last-child { border-bottom: 0; }
+    .check-item input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--green); cursor: pointer; }
+    .check-item strong { display: block; margin-bottom: 3px; font-size: 14px; }
+    .check-item small { display: block; color: var(--muted); font-size: 12px; }
+    .checklist-bottom { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 15px 23px; border-top: 1px solid var(--line); }
+    .result-text { color: var(--green); font-size: 12px; font-weight: 700; }
+    .reset-button { padding: 6px 0; border: 0; background: transparent; color: var(--muted); font: 400 10px/1.4 var(--mono); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+    .reset-button:hover { color: var(--ink); }
+
+    .closing { display: flex; justify-content: space-between; align-items: center; gap: 32px; padding-block: 57px; }
+    .closing h2 { max-width: 570px; font-size: 34px; }
+    .closing .button-primary { flex: 0 0 auto; }
+    .site-footer { border-top: 1px solid var(--line); }
+    .footer-inner { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 20px; color: var(--muted); font: 400 10px/1.5 var(--mono); }
+    .footer-inner a { color: var(--green); text-decoration: none; }
+    .footer-inner a:hover { text-decoration: underline; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+    @keyframes arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+    @media (max-width: 850px) {
+      .shell { width: min(100% - 40px, 650px); }
+      .hero { grid-template-columns: 1fr 0.88fr; gap: 30px; padding-block: 58px 66px; }
+      h1 { font-size: 52px; }
+      .hero-visual { min-height: 370px; }
+      .principles-inner { grid-template-columns: repeat(3, 1fr); }
+      .principles-heading { grid-column: 1 / -1; padding: 22px 0 12px; }
+      .principle { padding: 12px 16px 22px 0; border-left: 0; }
+      .principle + .principle { padding-left: 16px; border-left: 1px solid #ffffff27; }
+      .check-layout { gap: 38px; }
+    }
+    @media (max-width: 600px) {
+      .shell { width: calc(100% - 36px); }
+      .nav { min-height: 66px; }
+      .nav-links { gap: 0; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .nav-cta { min-height: 38px; padding-inline: 12px; font-size: 12px; }
+      .hero { grid-template-columns: 1fr; gap: 36px; padding-block: 48px 56px; }
+      h1 { max-width: 430px; font-size: 50px; }
+      .hero-copy > p { font-size: 16px; }
+      .hero-visual { min-height: 320px; }
+      .hero-image { inset: 0 0 20px 14px; width: calc(100% - 14px); height: calc(100% - 20px); }
+      .visual-index { top: 14px; }
+      .principles-inner { grid-template-columns: 1fr; padding-bottom: 12px; }
+      .principles-heading { padding-top: 20px; }
+      .principle, .principle + .principle { padding: 13px 0; border: 0; border-top: 1px solid #ffffff27; }
+      .section { padding-block: 66px; }
+      .section-heading { display: block; margin-bottom: 26px; }
+      h2 { font-size: 34px; }
+      .section-heading > p { margin: 14px 0 0; }
+      .signals { grid-template-columns: 1fr; }
+      .signal, .signal + .signal { min-height: auto; padding: 20px 0; border-left: 0; }
+      .signal + .signal { border-top: 1px solid var(--line); }
+      .signal h3 { margin-top: 12px; }
+      .check-section { padding-block: 60px; }
+      .check-layout { grid-template-columns: 1fr; gap: 28px; }
+      .check-intro { position: static; }
+      .check-intro h2 { font-size: 34px; }
+      .checklist-top, .check-items, .checklist-bottom { padding-inline: 16px; }
+      .closing { display: block; padding-block: 46px; }
+      .closing h2 { margin-bottom: 22px; font-size: 30px; }
+      .footer-inner { min-height: 80px; align-items: flex-start; justify-content: center; flex-direction: column; gap: 4px; padding-block: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav shell" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Safehouse home">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span class="brand-name">safehouse</span>
+      </a>
+      <div class="nav-links">
+        <a href="#signals">Field notes</a>
+        <a href="#checkup">Readiness check</a>
+        <a class="nav-cta" href="#checkup">Check your setup <span aria-hidden="true">&#8599;</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero shell" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="eyebrow">Cybersecurity for real life</div>
+        <h1 id="hero-title">Less panic.<br>More <span>prepared.</span></h1>
+        <p>Clear, practical security guidance for small teams. Build better habits, spot the risks that matter, and get on with your work.</p>
+        <div class="hero-actions">
+          <a class="button-primary" href="#checkup">Take the 60-second check <span aria-hidden="true">&#8594;</span></a>
+          <a class="text-link" href="#signals">Explore the field notes</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img class="hero-image" src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&amp;fit=crop&amp;w=1100&amp;q=85" alt="Rows of illuminated server racks in a data center">
+        <div class="visual-index">Field guide 001 / The essentials</div>
+        <div class="visual-note">
+          <span>A good place to start</span>
+          <strong>Make the basics boring.</strong>
+          <p>Strong defaults beat last-minute fixes.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="principles" aria-label="Our approach">
+      <div class="principles-inner shell">
+        <div class="principles-heading">Security that fits<br>the way you work.</div>
+        <div class="principle"><b>Start small</b><span>One useful habit at a time.</span></div>
+        <div class="principle"><b>Stay human</b><span>People are part of the solution.</span></div>
+        <div class="principle"><b>Keep it clear</b><span>Plain language. Practical steps.</span></div>
+      </div>
+    </section>
+
+    <section class="section shell" id="signals" aria-labelledby="signals-title">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">A few things worth getting right</div>
+          <h2 id="signals-title">Strong foundations<br>change the picture.</h2>
+        </div>
+        <p>Most everyday security comes down to a handful of repeatable decisions. Start with the ones that protect the most.</p>
+      </div>
+      <div class="signals">
+        <article class="signal">
+          <span class="signal-number">01 / ACCESS</span>
+          <h3>Lock the front door</h3>
+          <p>Use a password manager and turn on multi-factor authentication, especially for email and admin accounts.</p>
+        </article>
+        <article class="signal">
+          <span class="signal-number">02 / UPDATES</span>
+          <h3>Patch the easy gaps</h3>
+          <p>Automatic updates close known holes before they become tomorrow's urgent task.</p>
+        </article>
+        <article class="signal">
+          <span class="signal-number">03 / RECOVERY</span>
+          <h3>Know you can recover</h3>
+          <p>Keep a separate backup of important work, and check that you can actually restore it.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="check-section" id="checkup" aria-labelledby="check-title">
+      <div class="check-layout shell">
+        <div class="check-intro">
+          <div class="eyebrow">Your 60-second check</div>
+          <h2 id="check-title">How are your basics?</h2>
+          <p>Tick what you already have in place. Your progress stays in this browser; nothing is sent anywhere.</p>
+          <div class="local-note">Saved only on this device</div>
+        </div>
+        <div class="checklist">
+          <div class="checklist-top">
+            <strong>Security essentials</strong>
+            <span class="progress-copy" id="progress-copy">0 OF 4 IN PLACE</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="Security essentials completed" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" id="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="check-items">
+            <div class="check-item">
+              <input type="checkbox" id="item-mfa" data-key="mfa">
+              <label for="item-mfa"><strong>Multi-factor authentication is on</strong><small>Start with your email and important accounts.</small></label>
+            </div>
+            <div class="check-item">
+              <input type="checkbox" id="item-passwords" data-key="passwords">
+              <label for="item-passwords"><strong>Passwords are unique and stored safely</strong><small>A password manager makes both easier.</small></label>
+            </div>
+            <div class="check-item">
+              <input type="checkbox" id="item-updates" data-key="updates">
+              <label for="item-updates"><strong>Devices install updates automatically</strong><small>Include your browser, phone, and computer.</small></label>
+            </div>
+            <div class="check-item">
+              <input type="checkbox" id="item-backups" data-key="backups">
+              <label for="item-backups"><strong>Important files have a separate backup</strong><small>Test restoring one file so you know it works.</small></label>
+            </div>
+          </div>
+          <div class="checklist-bottom">
+            <span class="result-text" id="result-text" aria-live="polite">Every step counts. Start anywhere.</span>
+            <button class="reset-button" id="reset-button" type="button">Reset check</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing shell" aria-label="Next steps">
+      <div>
+        <div class="eyebrow">A calmer way to get started</div>
+        <h2>Small steps today make a steadier tomorrow.</h2>
+      </div>
+      <a class="button-primary" href="#checkup">Review your essentials <span aria-hidden="true">&#8594;</span></a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner shell">
+      <span>&copy; <span id="year"></span> Safehouse / Practical by design.</span>
+      <a href="#top">Back to top &#8593;</a>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const storageKey = "safehouse-readiness-v1";
+      const items = [...document.querySelectorAll(".check-item input")];
+      const progressCopy = document.getElementById("progress-copy");
+      const progressTrack = document.getElementById("progress-track");
+      const progressFill = document.getElementById("progress-fill");
+      const resultText = document.getElementById("result-text");
+
+      const messages = [
+        "Every step counts. Start anywhere.",
+        "A good start. Pick one more to tackle.",
+        "Nice progress. Keep building the habit.",
+        "Nearly there. Your foundations are taking shape.",
+        "All four in place. That's a strong foundation."
+      ];
+
+      function saveProgress() {
+        const completed = items.filter((item) => item.checked).length;
+        progressCopy.textContent = `${completed} OF ${items.length} IN PLACE`;
+        progressTrack.setAttribute("aria-valuenow", String(completed));
+        progressFill.style.width = `${(completed / items.length) * 100}%`;
+        resultText.textContent = messages[completed];
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(items.map((item) => item.checked)));
+        } catch {
+          // The checklist still works if browser storage is unavailable.
+        }
+      }
+
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+        if (Array.isArray(saved)) items.forEach((item, index) => { item.checked = saved[index] === true; });
+      } catch {
+        // Ignore invalid or unavailable local storage and use the fresh checklist.
+      }
+
+      items.forEach((item) => item.addEventListener("change", saveProgress));
+      document.getElementById("reset-button").addEventListener("click", () => {
+        items.forEach((item) => { item.checked = false; });
+        saveProgress();
+      });
+      document.getElementById("year").textContent = String(new Date().getFullYear());
+      saveProgress();
+    })();
+  </script>
+</body>
+</html>
